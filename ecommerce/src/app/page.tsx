@@ -42,12 +42,6 @@ export default function Home() {
       precio: "40.000",
       url: "https://dcdn.mitiendanube.com/stores/090/363/products/remerasegundapielm-largahombretrevoweb-63797426a9c243f71717136278847001-480-0.png",
     },
-    {
-      name: "Remera Brooklyn",
-      tipo: "remera",
-      precio: "21.000",
-      url: "https://acdn.mitiendanube.com/stores/001/106/550/products/303b1fab-d6b0-4977-aa63-cfa9f12f857a-1-1597f88f6a873fde5c17017229455925-1024-1024.png",
-    },
   ];
 
   const inferior = [
@@ -62,12 +56,6 @@ export default function Home() {
       tipo: "pantalon",
       precio: "16.000",
       url: "https://acdn.mitiendanube.com/stores/894/482/products/whatsapp_image_2021-03-22_at_11-29-20-removebg-preview11-46af83229bfa8f51e616164243549753-640-0.png",
-    },
-    {
-      name: "Jean Formal Azul",
-      tipo: "pantalon",
-      precio: "18.000",
-      url: "https://static.wixstatic.com/media/1e7822_2da25cc5245c475eb44270413d0796c1~mv2.png/v1/fill/w_476,h_906,al_c,lg_1,q_90,enc_auto/1e7822_2da25cc5245c475eb44270413d0796c1~mv2.png",
     },
   ];
 
@@ -103,14 +91,14 @@ export default function Home() {
     <>
       <main className="h-screen w-screen flex items-end">
         <div className="h-[calc(100vh-70px)] w-full p-8 ">
-          <div className="grid grid-cols-5 grid-rows-4 gap-4 w-full h-full">
+          <div className="grid grid-cols-3 grid-rows-4 gap-4 w-full h-full">
             <div className="col-span-4 row-span-4 col-start-2 row-start-1 w-full h-full border-black  p-5">
               <div className="w-full h-full flex flex-col gap-y-2">
                 <div className="w-full h-1/2 flex gap-4 px-10 pb-5">
                   {superior.map((prenda, name) => (
                     <>
                       <div
-                        className="w-1/3 h-full flex bg-gray-100 rounded-lg"
+                        className="w-1/2 h-full flex bg-gray-100 rounded-lg"
                         key={name}
                       >
                         <div className="w-[50%] h-full">
@@ -170,7 +158,7 @@ export default function Home() {
                   {inferior.map((prenda, name) => (
                     <>
                       <div
-                        className="w-1/3 h-full flex bg-gray-100 rounded-lg"
+                        className="w-1/2 h-full flex bg-gray-100 rounded-lg"
                         key={name}
                       >
                         <div className="w-[50%] h-full">
@@ -232,7 +220,7 @@ export default function Home() {
               
                 {isLoading && !image.length ? (
                   <div className="w-full h-full flex justify-center items-center bg-black bg-opacity-20">
-                    <div className="w-36 h-36">
+                    <div className="w-40 h-40">
                       <LogoClostechCarga className={"animate-pulse"} />
                     </div>
                   </div>

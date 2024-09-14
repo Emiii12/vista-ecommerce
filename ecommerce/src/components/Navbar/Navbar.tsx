@@ -2,7 +2,7 @@
 import React from "react";
 import { UserCircleIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { ChevronDownIcon } from "@heroicons/react/24/outline";
+import { ChevronDownIcon, ShoppingCartIcon } from "@heroicons/react/24/outline";
 
 const Navbar: React.FC = () => {
   return (
@@ -48,6 +48,14 @@ const Navbar: React.FC = () => {
                   className={`text-base transition-colors duration-100 hover:text-slate-300 hover:font-medium`}
                 >
                   Niño  
+                </Link>
+              </li>
+              <li className="">
+                <Link
+                  href={"/"}
+                  className={`text-base transition-colors duration-100 hover:text-slate-300 hover:font-medium`}
+                >
+                  <ShoppingCartIcon className="w-5 h-5 text-white" />
                 </Link>
               </li>
             </ul>
