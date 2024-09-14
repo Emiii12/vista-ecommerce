@@ -2,7 +2,7 @@
 "use client";
 import Image from "next/image";
 import { ShoppingCartIcon } from "@heroicons/react/24/outline";
-import { getOverlapCloth, uploadImage } from "@/service/image";
+import { getOverlapCloth } from "@/service/image";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 
@@ -75,7 +75,7 @@ export default function Home() {
 
   console.log(urlImageDown, urlImageTop);
 
-  const { isPending: isLoading, mutate } = useMutation({
+  const { isPending: isLoading, isError: isErrorImage, mutate } = useMutation({
     mutationFn: () =>
       getOverlapCloth(
         avatar,
@@ -86,6 +86,7 @@ export default function Home() {
       ),
     onSuccess: (data) => {
       setImage(data.Link);
+      console.log("URL DE LA IMAGEN: ", data.Link)
     },
   });
 
@@ -97,158 +98,156 @@ export default function Home() {
     mutate();
   };
 
-  // const uploadImageToServ = async (file: File) => {
-  //   try {
-  //     const responseUploadImage = await uploadImage(file as Blob, "userimg");
-  //     const imageUrl = responseUploadImage.url;
-  //     const responseTypesImage = await getTypesImage(imageUrl);
-  //     setImageIaResult(responseTypesImage);
-  //     setImageUrl(responseTypesImage.url_imagen);
-  //     await deleteImage(responseUploadImage.blobName, "userimg");
-  //   } catch (error) {}
-  // };
-
   return (
-    <main className="h-screen w-screen flex items-end">
-      <div className="h-[calc(100vh-70px)] w-full p-8 ">
-        <div className="grid grid-cols-5 grid-rows-4 gap-4 w-full h-full">
-          <div className="col-span-4 row-span-4 col-start-2 row-start-1 w-full h-full border-black  p-5">
-            <div className="w-full h-full flex flex-col gap-y-2">
-              <div className="w-full h-1/2 flex gap-4 px-10 pb-5">
-                {superior.map((prenda, name) => (
-                  <>
-                    <div
-                      className="w-1/3 h-full flex bg-gray-100 rounded-lg"
-                      key={name}
-                    >
-                      <div className="w-[50%] h-full">
-                        <Image
-                          src={prenda.url}
-                          width={1000}
-                          height={1000}
-                          alt=""
-                          className="w-full h-full object-contain p-8"
-                        />
-                      </div>
-                      <div className="w-[50%] h-full py-10 px-3 flex flex-col justify-between">
-                        <div className="w-full h-full flex flex-col justify-between pb-10">
-                          <div className="w-full">
-                            <p className="text-black font-bold text-base mb-2">
-                              {prenda.name}
-                            </p>
-                            <p className="text-black font-extralight text-sm mb-5">
-                              {prenda.tipo}
-                            </p>
-                          </div>
-                          <div className="">
-                            <p className="text-black font-bold text-lg">
-                              ${prenda.precio}
-                            </p>
-                          </div>
+    <>
+      <main className="h-screen w-screen flex items-end">
+        <div className="h-[calc(100vh-70px)] w-full p-8 ">
+          <div className="grid grid-cols-5 grid-rows-4 gap-4 w-full h-full">
+            <div className="col-span-4 row-span-4 col-start-2 row-start-1 w-full h-full border-black  p-5">
+              <div className="w-full h-full flex flex-col gap-y-2">
+                <div className="w-full h-1/2 flex gap-4 px-10 pb-5">
+                  {superior.map((prenda, name) => (
+                    <>
+                      <div
+                        className="w-1/3 h-full flex bg-gray-100 rounded-lg"
+                        key={name}
+                      >
+                        <div className="w-[50%] h-full">
+                          <Image
+                            src={prenda.url}
+                            width={1000}
+                            height={1000}
+                            alt=""
+                            className="w-full h-full object-contain p-8"
+                          />
                         </div>
-                        <div className="flex flex-col gap-2">
-                          <div className="w-full flex gap-2">
-                            <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
-                              <p className="text-white text-xs">Comprar</p>
-                            </button>
-                            <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
-                              <p className="text-white text-xs flex justify-center items-center gap-2">
-                                Agregar
-                                <ShoppingCartIcon className="w-5 h-5 text-white" />
+                        <div className="w-[50%] h-full py-10 px-3 flex flex-col justify-between">
+                          <div className="w-full h-full flex flex-col justify-between pb-10">
+                            <div className="w-full">
+                              <p className="text-black font-bold text-base mb-2">
+                                {prenda.name}
+                              </p>
+                              <p className="text-black font-extralight text-sm mb-5">
+                                {prenda.tipo}
+                              </p>
+                            </div>
+                            <div className="">
+                              <p className="text-black font-bold text-lg">
+                                ${prenda.precio}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <div className="w-full flex gap-2">
+                              <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
+                                <p className="text-white text-xs">Comprar</p>
+                              </button>
+                              <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
+                                <p className="text-white text-xs flex justify-center items-center gap-2">
+                                  Agregar
+                                  <ShoppingCartIcon className="w-5 h-5 text-white" />
+                                </p>
+                              </button>
+                            </div>
+                            <button
+                              className="w-full py-2 bg-blue-900 rounded-sm transition-all duration-100 hover:bg-blue-950 hover:scale-105"
+                              onClick={() =>
+                                handleConfirm(setUrlImageTop, prenda.url)
+                              }
+                            >
+                              <p className="text-white text-base">
+                                Probar prenda
                               </p>
                             </button>
                           </div>
-                          <button
-                            className="w-full py-2 bg-blue-900 rounded-sm transition-all duration-100 hover:bg-blue-950 hover:scale-105"
-                            onClick={() =>
-                              handleConfirm(setUrlImageTop, prenda.url)
-                            }
-                          >
-                            <p className="text-white text-base">
-                              Probar prenda
-                            </p>
-                          </button>
                         </div>
                       </div>
-                    </div>
-                  </>
-                ))}
-              </div>
-              <div className="w-full h-1/2 flex gap-4 px-10 pb-5">
-                {inferior.map((prenda, name) => (
-                  <>
-                    <div
-                      className="w-1/3 h-full flex bg-gray-100 rounded-lg"
-                      key={name}
-                    >
-                      <div className="w-[50%] h-full">
-                        <Image
-                          src={prenda.url}
-                          width={1000}
-                          height={1000}
-                          alt=""
-                          className="w-full h-full object-contain p-8"
-                        />
-                      </div>
-                      <div className="w-[50%] h-full py-10 px-3 flex flex-col justify-between">
-                        <div className="w-full h-full flex flex-col justify-between pb-10">
-                          <div className="w-full">
-                            <p className="text-black font-bold text-base mb-2">
-                              {prenda.name}
-                            </p>
-                            <p className="text-black font-extralight text-sm mb-5">
-                              {prenda.tipo}
-                            </p>
-                          </div>
-                          <div className="">
-                            <p className="text-black font-bold text-lg">
-                              ${prenda.precio}
-                            </p>
-                          </div>
+                    </>
+                  ))}
+                </div>
+                <div className="w-full h-1/2 flex gap-4 px-10 pb-5">
+                  {inferior.map((prenda, name) => (
+                    <>
+                      <div
+                        className="w-1/3 h-full flex bg-gray-100 rounded-lg"
+                        key={name}
+                      >
+                        <div className="w-[50%] h-full">
+                          <Image
+                            src={prenda.url}
+                            width={1000}
+                            height={1000}
+                            alt=""
+                            className="w-full h-full object-contain p-8"
+                          />
                         </div>
-                        <div className="flex flex-col gap-2">
-                          <div className="w-full flex gap-2">
-                            <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
-                              <p className="text-white text-xs">Comprar</p>
-                            </button>
-                            <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
-                              <p className="text-white text-xs flex justify-center items-center gap-2">
-                                Agregar
-                                <ShoppingCartIcon className="w-5 h-5 text-white" />
+                        <div className="w-[50%] h-full py-10 px-3 flex flex-col justify-between">
+                          <div className="w-full h-full flex flex-col justify-between pb-10">
+                            <div className="w-full">
+                              <p className="text-black font-bold text-base mb-2">
+                                {prenda.name}
+                              </p>
+                              <p className="text-black font-extralight text-sm mb-5">
+                                {prenda.tipo}
+                              </p>
+                            </div>
+                            <div className="">
+                              <p className="text-black font-bold text-lg">
+                                ${prenda.precio}
+                              </p>
+                            </div>
+                          </div>
+                          <div className="flex flex-col gap-2">
+                            <div className="w-full flex gap-2">
+                              <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
+                                <p className="text-white text-xs">Comprar</p>
+                              </button>
+                              <button className="w-full py-2 bg-gray-900 rounded-sm transition-all duration-100 hover:bg-black hover:scale-105">
+                                <p className="text-white text-xs flex justify-center items-center gap-2">
+                                  Agregar
+                                  <ShoppingCartIcon className="w-5 h-5 text-white" />
+                                </p>
+                              </button>
+                            </div>
+                            <button
+                              className="w-full py-2 bg-blue-900 rounded-sm transition-all duration-100 hover:bg-blue-950 hover:scale-105"
+                              onClick={() =>
+                                handleConfirm(setUrlImageDown, prenda.url)
+                              }
+                            >
+                              <p className="text-white text-base">
+                                Probar prenda
                               </p>
                             </button>
                           </div>
-                          <button
-                            className="w-full py-2 bg-blue-900 rounded-sm transition-all duration-100 hover:bg-blue-950 hover:scale-105"
-                            onClick={() =>
-                              handleConfirm(setUrlImageDown, prenda.url)
-                            }
-                          >
-                            <p className="text-white text-base">
-                              Probar prenda
-                            </p>
-                          </button>
                         </div>
                       </div>
-                    </div>
-                  </>
-                ))}
+                    </>
+                  ))}
+                </div>
               </div>
             </div>
-          </div>
-          <div className="row-span-4 col-start-1 row-start-1 w-full h-full p-10">
-            <div className="w-full h-full bg-gray-200 rounded-lg p-5">
-              <Image
-                src={image.length === 0 ? avatar : image}
-                width={1000}
-                height={1000}
-                alt="avatar"
-                className="w-full h-full object-contain"
-              />
+            <div className="row-span-4 col-start-1 row-start-1 w-full h-full p-10">
+              
+                {isLoading && !image.length ? (
+                  <div className="w-full h-full bg-black bg-opacity-50 flex justify-center items-center rounded-lg">
+                    <h1 className="text-4xl font-bold text-white">Cargando...</h1>
+                  </div>
+                ) : (
+                  <div className="w-full h-full bg-gray-200 rounded-lg p-5">
+                    <Image
+                      src={image.length === 0 ? avatar : image}
+                      width={1000}
+                      height={1000}
+                      alt="avatar"
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                )}
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }
