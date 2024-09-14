@@ -5,6 +5,7 @@ import { ShoppingCartIcon } from "@heroicons/react/24/outline";
 import { getOverlapCloth } from "@/service/image";
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { LogoClostechCarga } from "../../public/logo";
 
 const maskMapping: Record<string, string> = {
   remera: "upper_body",
@@ -230,8 +231,10 @@ export default function Home() {
             <div className="row-span-4 col-start-1 row-start-1 w-full h-full p-10">
               
                 {isLoading && !image.length ? (
-                  <div className="w-full h-full bg-black bg-opacity-50 flex justify-center items-center rounded-lg">
-                    <h1 className="text-4xl font-bold text-white">Cargando...</h1>
+                  <div className="w-full h-full flex justify-center items-center bg-black bg-opacity-20">
+                    <div className="w-36 h-36">
+                      <LogoClostechCarga className={"animate-pulse"} />
+                    </div>
                   </div>
                 ) : (
                   <div className="w-full h-full bg-gray-200 rounded-lg p-5">
