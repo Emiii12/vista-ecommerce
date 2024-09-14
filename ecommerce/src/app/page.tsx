@@ -7,6 +7,7 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { LogoClostechCarga } from "../../public/logo";
 import { ModalPreview } from "../components/Modal/ModalPreview";
+import { deleteBackgroundImage } from "@/service/image";
 
 export default function Home() {
   const [urlImageTop, setUrlImageTop] = useState<string>("");
@@ -57,9 +58,14 @@ export default function Home() {
         "upper_body",
         "lower_body"
       ),
-    onSuccess: (data) => {
-      setImage(data.Link); 
-      setIsLoading(false); 
+    onSuccess: async (data) => {
+      try {
+        const response = await deleteBackgroundImage(data.Link);
+        setImage(response.url_imagen);
+        setIsLoading(false);
+      } catch (error) {
+        console.error("Error al eliminar el fondo:", error);
+      }
     },
     onError: () => {
       setIsLoading(false); 
@@ -92,6 +98,8 @@ export default function Home() {
   const handleCloseModal = () => {
     setShowModal(false);
   };
+
+
 
   return (
     <>
@@ -250,7 +258,7 @@ export default function Home() {
                 <>
                   <div className="w-full h-full bg-gray-200 rounded-lg p-10">
                     <Image
-                      src={image.length === 0 ? avatar : image}
+                      src={image.length !== 0 ? image : avatar}
                       width={1000}
                       height={1000}
                       alt="avatar"
